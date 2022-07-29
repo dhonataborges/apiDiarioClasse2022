@@ -18,7 +18,7 @@ public class TestConfig {
 	
 	@Bean
 	public void instanciaDB() throws ParseException {
-		//this.dbService.instanciaDB();
+		this.dbService.instanciaDB();
 	}
 	
 }
