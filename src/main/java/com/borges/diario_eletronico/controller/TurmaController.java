@@ -46,7 +46,7 @@ public class TurmaController {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<TurmaDTO> create(@Valid @RequestBody TurmaDTO objDTO) {
 		Turma obj = service.create(objDTO);
@@ -54,14 +54,14 @@ public class TurmaController {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<TurmaDTO> update(@PathVariable Integer id, @Valid @RequestBody TurmaDTO objDTO) {
 		Turma obj = service.update(id, objDTO);
 		return ResponseEntity.ok().body(new TurmaDTO(obj));
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);

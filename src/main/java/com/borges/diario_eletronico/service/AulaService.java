@@ -35,39 +35,45 @@ public class AulaService {
 		return repository.save(newAula(objDTO));
 	}
 
-	public Aula update(Integer id, @Valid AulaDTO objDTO) {
+	public Aula update(Integer aulaId, @Valid AulaDTO aulaDTO) {
 		
-		objDTO.setId(id);
-		Aula oldObj = findById(id);
+		Aula aulaUpdate = repository.getById(aulaId);
 		
-		/* if (oldObj.getProfessorAula().size() > 0) {
-
-			throw new DataIntegratyViolationException("Aula possui professor, não pode ser Atulaizada!");
-
-		} */
+		setUpdateAula(aulaUpdate, aulaDTO);
 		
-
-		oldObj = newAula(objDTO);
-		
-		return repository.save(oldObj);
+		return repository.saveAndFlush(aulaUpdate);
 	}
 
-	private Aula newAula(AulaDTO objDTO) {
+	private void setUpdateAula(Aula aula , AulaDTO objDTO) {
 		
-		ProfessorTurmaDisciplina disciplina = professorService.findById(objDTO.getDisciplina());
-		Aula aula = new Aula();
-		
-		if (objDTO.getId() != null) {
-			aula.setId(objDTO.getId());
-		}
+		ProfessorTurmaDisciplina professorTurmaDisciplina = professorService.findById(objDTO.getDisciplina());		
 
 		aula.setData(objDTO.getData());
 		aula.setHoraInicio(objDTO.getHoraInicio());
 		aula.setHoraFim(objDTO.getHoraFim());
 		aula.setConteudo(objDTO.getConteudo());
-		aula.setProfessorTurmaDisciplina(disciplina);
+		aula.setProfessorTurmaDisciplina(professorTurmaDisciplina);
 
+	}
+	
+	private Aula newAula(AulaDTO objDTO) {
+		
+		Aula aula = new Aula();
+		ProfessorTurmaDisciplina professorTurmaDisciplina = professorService.findById(objDTO.getDisciplina());		
+
+		
+		if (objDTO.getId() != null) {
+			aula.setId(objDTO.getId());
+		}
+		
+		aula.setData(objDTO.getData());
+		aula.setHoraInicio(objDTO.getHoraInicio());
+		aula.setHoraFim(objDTO.getHoraFim());
+		aula.setConteudo(objDTO.getConteudo());
+		aula.setProfessorTurmaDisciplina(professorTurmaDisciplina);
+		
 		return aula;
+
 	}
 
 	public void delete(Integer id) {

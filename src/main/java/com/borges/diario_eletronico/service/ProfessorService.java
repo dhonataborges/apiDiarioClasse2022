@@ -108,7 +108,7 @@ public class ProfessorService {
 	 * Delete um Profissional pelo ID
 	 */
 	public void delete(Integer id) {
-
+		
 		professorRepository.deleteById(id);
 
 	}

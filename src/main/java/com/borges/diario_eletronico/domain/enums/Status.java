@@ -2,7 +2,7 @@ package com.borges.diario_eletronico.domain.enums;
 
 public enum Status {
 	
-	ATIVA(0, "ATIVA"), FINALIZADA(1, "FINALIZADA");
+	ATIVO(1, "ATIVO"), AUSENTE(2, "AUSENTE");
 	
 	private Integer codigo;
 	private String descricao;

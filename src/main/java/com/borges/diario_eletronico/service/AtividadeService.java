@@ -9,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.borges.diario_eletronico.domain.Atividade;
+import com.borges.diario_eletronico.domain.Aula;
 import com.borges.diario_eletronico.domain.ProfessorTurmaDisciplina;
 import com.borges.diario_eletronico.domain.dtos.AtividadeDTO;
+import com.borges.diario_eletronico.domain.dtos.AulaDTO;
 import com.borges.diario_eletronico.repository.AtividadeRepository;
 import com.borges.diario_eletronico.service.execeptions.ObjectNotFoundException;
 
@@ -34,29 +36,34 @@ public class AtividadeService {
 	public Atividade create(AtividadeDTO objDTO) {
 		return repository.save(newAtividade(objDTO));
 	}
-
+	
 	public Atividade update(Integer id, @Valid AtividadeDTO objDTO) {
 		
-		objDTO.setId(id);
-		Atividade oldObj = findById(id);
+		Atividade atividaUpdate = repository.getById(id);
 		
-		/* if (oldObj.getProfessorAtividade().size() > 0) {
-
-			throw new DataIntegratyViolationException("Atividade possui professor, não pode ser Atulaizada!");
-
-		} */
+		setUpdateAula(atividaUpdate, objDTO);
 		
+		return repository.saveAndFlush(atividaUpdate);
+	}
 
-		oldObj = newAtividade(objDTO);
+	public void setUpdateAula(Atividade atividade, AtividadeDTO objDTO) {
 		
-		return repository.save(oldObj);
+		ProfessorTurmaDisciplina professorTurmaDisciplina = professorService.findById(objDTO.getDisciplina());
+		
+		atividade.setDataCriacao(objDTO.getDataCriacao());
+		atividade.setDataEntrega(objDTO.getDataEntrega());
+		atividade.setNotaMaxima(objDTO.getNotaMaxima());
+		atividade.setDescricao(objDTO.getDescricao());
+		atividade.setTipo(objDTO.getTipo());
+		atividade.setProfessorTurmaDisciplina(professorTurmaDisciplina);
+		
 	}
 
 	private Atividade newAtividade(AtividadeDTO objDTO) {
 		
-		ProfessorTurmaDisciplina disciplina = professorService.findById(objDTO.getDisciplina());
 		Atividade atividade = new Atividade();
-		
+		ProfessorTurmaDisciplina professorTurmaDisciplina = professorService.findById(objDTO.getDisciplina());
+			
 		if (objDTO.getId() != null) {
 			atividade.setId(objDTO.getId());
 		}
@@ -66,7 +73,7 @@ public class AtividadeService {
 		atividade.setNotaMaxima(objDTO.getNotaMaxima());
 		atividade.setDescricao(objDTO.getDescricao());
 		atividade.setTipo(objDTO.getTipo());
-		atividade.setProfessorTurmaDisciplina(disciplina);
+		atividade.setProfessorTurmaDisciplina(professorTurmaDisciplina);
 
 		return atividade;
 	}
@@ -77,7 +84,7 @@ public class AtividadeService {
 
 		/* if (obj.getProfessorTurmaDisciplina().size() > 0) {
 
-			throw new DataIntegratyViolationException("Atividade possui professor, não pode ser deletad!");
+			throw new DataIntegratyViolationException("Atividade possui professor! N ão pode ser deletado!");
 
 		} */
 		repository.deleteById(id);

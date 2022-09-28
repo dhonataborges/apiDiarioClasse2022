@@ -48,7 +48,7 @@ public class ProfessorController {
 		return ResponseEntity.ok().body(listDTO);
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<ProfessorDTO> update(@PathVariable Integer id, @RequestBody ProfessorDTO objDTO) {
 		Professor obj =  service.update(id, objDTO);
@@ -56,7 +56,7 @@ public class ProfessorController {
 		return ResponseEntity.ok().body(new ProfessorDTO(obj));
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<ProfessorDTO> create(@Valid @RequestBody ProfessorDTO obj) throws Exception {
 		
@@ -67,7 +67,7 @@ public class ProfessorController {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	//@PreAuthorize("hasAnyRole('ADMIN')")
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id){
 		service.delete(id);
